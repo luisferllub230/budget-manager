@@ -1,6 +1,5 @@
 import { Fragment, useState } from 'react'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Alerts from './Alerts';
 
 
 const GetBudget = () => {
@@ -16,33 +15,20 @@ const GetBudget = () => {
     const validateForm = e => {
         e.preventDefault();
 
-        if (getMoneyTotal <= 0 || getMoneyTotal == undefined || getMoneyTotal === "") {
-            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-danger  rounded"
+        if (getMoneyTotal <= 0 || getMoneyTotal == undefined || isNaN(getMoneyTotal) || getMoneyTotal === "") {
+            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-danger  rounded";
             setError(true);
-
-            Swal.fire(
-                'Error :: You cant send a null values or 0',
-                '',
-                'error'
-              )
-            return;
+            Alerts('','error','Error :: You cant send a null values or 0').then(()=>console.log('sss'))
         }else{
-            
-            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-success  rounded"
-            setError(false)
-            console.log("pass the validation")
-
-            Swal.fire(
-                'Good job!',
-                'You clicked the button!',
-                'success'
-              )
+            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-success  rounded";
+            setError(false);
+            Alerts('','success','validated data').then(()=>{return;});
         }
     }
 
     return (
         <Fragment>
-            <div className="card col-10 mx-auto">
+            <div className="card col-10 w-75 mx-auto">
                 <form
                     onSubmit={validateForm}
                 >
