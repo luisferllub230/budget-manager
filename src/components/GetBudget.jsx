@@ -2,11 +2,10 @@ import { Fragment, useState } from 'react'
 import Alerts from './Alerts';
 
 
-const GetBudget = () => {
+const GetBudget = ({ setBudget, setRemaining, serShowQuestion }) => {
 
     //useState
     const [getMoneyTotal, setMoneyTotal] = useState(0);
-    const [error, setError] = useState(false);
 
     //getMoneyTotal
     const onChangeMoney = e => setMoneyTotal(parseInt(e.target.value, 10));
@@ -16,38 +15,39 @@ const GetBudget = () => {
         e.preventDefault();
 
         if (getMoneyTotal <= 0 || getMoneyTotal == undefined || isNaN(getMoneyTotal) || getMoneyTotal === "") {
-            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-danger  rounded";
-            setError(true);
-            Alerts('','error','Error :: You cant send a null values or 0').then(()=>console.log('sss'))
-        }else{
-            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-success  rounded";
-            setError(false);
-            Alerts('','success','validated data').then(()=>{return;});
+            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-5 border-danger  rounded";
+            Alerts('', 'error', 'Error :: You cant send a null values or 0')
+        } else {
+            document.getElementById("money").className = "col-12 mt-3 mb-3 border border-5 border-success  rounded";
+            Alerts('', 'success', 'validated data').then(() => {
+                return (setBudget(getMoneyTotal), setRemaining(getMoneyTotal), serShowQuestion(false))
+            });
         }
     }
 
     return (
         <Fragment>
-            <div className="card col-10 w-75 mx-auto">
-                <form
-                    onSubmit={validateForm}
-                >
-                    <div className="card-body text-start text-dark">
+            <form
+                onSubmit={validateForm}
+            >
+                <div className="card-body text-start text-dark">
+                    <div className='col-12 text-bold text-primary text-center'>
                         <h3>What is your budget for this week?</h3>
-                        <input
-                            onChange={onChangeMoney}
-                            type="number"
-                            min="0"
-                            id="money"
-                            className="col-12 mt-3 mb-3 border border-dark  rounded"
-                        />
-                        <button
-                            type="submit"
-                            className=" col-12 btn btn-success text-uppercase"
-                        >send your budget</button>
                     </div>
-                </form>
-            </div>
+                    <input
+                        onChange={onChangeMoney}
+                        type="number"
+                        min="0"
+                        id="money"
+                        className="col-12 mt-3 mb-3 border border-info  rounded"
+                        placeholder='  Ej. $500'
+                    />
+                    <button
+                        type="submit"
+                        className=" col-12 btn btn-info fw-bold text-white text-uppercase"
+                    >send your budget</button>
+                </div>
+            </form>
         </Fragment>
     );
 }
