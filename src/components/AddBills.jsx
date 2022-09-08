@@ -1,12 +1,28 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect} from 'react';
 import Alerts from './Alerts';
 import shortid from 'shortid';
 
-const Bills = () => {
+const Bills = ({ShowAllBills}) => {
 
+    //localStore
+    let allBillsLocalStore = JSON.parse(localStorage.getItem('bills'));
+    !allBillsLocalStore ? allBillsLocalStore = [] : null;
+
+    //useStates
     const [billsName, setBillsName] = useState('');
     const [ammonBills, setAmmonBills] = useState(0);
-    const [allBills, setAllBills] = useState([]);
+    const [allBills, setAllBills] = useState(allBillsLocalStore);
+
+    //useEffect
+    useEffect(()=>{
+        if(allBillsLocalStore){
+            localStorage.setItem('bills', JSON.stringify(allBills));
+            ShowAllBills(allBills);
+        }else{
+            localStorage.setItem('bills', JSON.stringify([]));
+        }
+    }, [allBills]);
+    
 
     const onSubmit = e => {
         e.preventDefault();
