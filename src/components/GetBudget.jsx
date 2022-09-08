@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react'
 import Alerts from './Alerts';
 
 
-const GetBudget = ({ setBudget, setRemaining, serShowQuestion }) => {
+const GetBudget = ({ setBudget, setRemaining}) => {
 
     //useState
     const [getMoneyTotal, setMoneyTotal] = useState(0);
@@ -20,7 +20,7 @@ const GetBudget = ({ setBudget, setRemaining, serShowQuestion }) => {
         } else {
             document.getElementById("money").className = "col-12 mt-3 mb-3 border border-5 border-success  rounded";
             Alerts('', 'success', 'validated data').then(() => {
-                return (setBudget(getMoneyTotal), setRemaining(getMoneyTotal), serShowQuestion(false))
+                return (setBudget(getMoneyTotal), setRemaining(getMoneyTotal))
             });
         }
     }
@@ -37,7 +37,6 @@ const GetBudget = ({ setBudget, setRemaining, serShowQuestion }) => {
                     <input
                         onChange={onChangeMoney}
                         type="number"
-                        min="0"
                         id="money"
                         className="col-12 mt-3 mb-3 border border-info  rounded"
                         placeholder='  Ej. $500'

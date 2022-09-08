@@ -2,10 +2,13 @@ import React, { Fragment, useState, useEffect} from 'react';
 import Alerts from './Alerts';
 import shortid from 'shortid';
 
-const Bills = ({ShowAllBills}) => {
+const Bills = ({ShowAllBills, setRemaining}) => {
 
     //localStore
     let allBillsLocalStore = JSON.parse(localStorage.getItem('bills'));
+    let totalMoney = JSON.parse(localStorage.getItem('totalMoney'));
+
+    !totalMoney ? totalMoney = parseInt(JSON.parse(localStorage.getItem('budget'))): parseInt(JSON.parse(localStorage.getItem('totalMoney')));
     !allBillsLocalStore ? allBillsLocalStore = [] : null;
 
     //useStates
@@ -16,7 +19,11 @@ const Bills = ({ShowAllBills}) => {
     //useEffect
     useEffect(()=>{
         if(allBillsLocalStore){
+            const math = totalMoney - ammonBills;
+            setRemaining(math);
+            localStorage.setItem('totalMoney', math);
             localStorage.setItem('bills', JSON.stringify(allBills));
+            setAmmonBills(0);
             ShowAllBills(allBills);
         }else{
             localStorage.setItem('bills', JSON.stringify([]));
@@ -27,7 +34,7 @@ const Bills = ({ShowAllBills}) => {
     const onSubmit = e => {
         e.preventDefault();
 
-        if(billsName === '' || billsName === undefined || ammonBills === undefined || isNaN(ammonBills)){
+        if(billsName === '' || billsName === undefined || ammonBills <= 0 ||ammonBills === undefined || isNaN(ammonBills)){
             Alerts('', 'error', 'Please check the name or ammon bills');
             return;
         }
@@ -35,7 +42,6 @@ const Bills = ({ShowAllBills}) => {
             Alerts('', 'success', 'validated data').then(() => {
                 setAllBills([...allBills, { id: shortid.generate(), billsName: billsName, ammonBills: ammonBills}])
                 setBillsName('');
-                setAmmonBills(0);
             });
         }
     }
@@ -62,9 +68,8 @@ const Bills = ({ShowAllBills}) => {
                     <label htmlFor="AmmonB" className='fw-bold'>Ammon of Bills:</label>
                     <input
                         type="number"
-                        max="99999"
-                        min="0"
                         id="AmmonB"
+                        min='0'
                         className="col-12 mt-1 mb-3 border border-info  rounded"
                         placeholder='  EJ. $500'
                         onChange={e => setAmmonBills(parseInt(e.target.value, 10))}
