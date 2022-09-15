@@ -1,6 +1,6 @@
 # budget-manager
 
-### demo: https://splendid-stardust-9b0405.netlify.app/
+### demo: https://clever-marshmallow-f83d45.netlify.app/
 
 
 
